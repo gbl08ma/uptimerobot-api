@@ -127,6 +127,10 @@ type GetMonitorsInput struct {
 func (u *UptimeRobot) GetMonitors(in *GetMonitorsInput) ([]Monitor, error) {
 	params := url.Values{}
 
+	if in == nil {
+		in = &GetMonitorsInput{}
+	}
+
 	if len(in.Monitors) > 0 {
 		params.Set("monitors", u.buildIntList(in.Monitors))
 	}
@@ -177,6 +181,7 @@ func (u *UptimeRobot) GetMonitors(in *GetMonitorsInput) ([]Monitor, error) {
 			Offset   int    `json:"offset,string"`
 			Limit    int    `json:"limit,string"`
 			Total    int    `json:"total,string"`
+			ID       int    `json:"id,string"`
 			Monitors struct {
 				Monitors []Monitor `json:"monitor"`
 			} `json:"monitors"`
@@ -188,6 +193,9 @@ func (u *UptimeRobot) GetMonitors(in *GetMonitorsInput) ([]Monitor, error) {
 		}
 
 		if res.Stat != "ok" {
+			if res.ID == ErrorAccountHasNoMonitors {
+				return []Monitor{}, nil
+			}
 			return nil, fmt.Errorf("Got unexpected status: %s", res.Stat)
 		}
 
