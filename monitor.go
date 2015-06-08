@@ -50,28 +50,28 @@ const (
 )
 
 type Monitor struct {
-	ID                 int                `json:"id"`
+	ID                 int                `json:"id,string"`
 	FriendlyName       string             `json:"friendlyname"`
 	URL                string             `json:"url"`
-	Type               MonitorType        `json:"type"`
-	Subtype            MonitorSubtype     `json:"subtype"`
-	KeywordType        MonitorKeywordType `json:"keywordtype"`
+	Type               MonitorType        `json:"type,string"`
+	Subtype            MonitorSubtype     `json:"subtype,string"`
+	KeywordType        MonitorKeywordType `json:"keywordtype,string"`
 	KeywordValue       string             `json:"keywordvalue"`
 	HTTPUsername       string             `json:"httpusername"`
 	HTTPPassword       string             `json:"httppassword"`
-	Port               int                `json:"port"`
-	Interval           int                `json:"interval"`
-	Status             MonitorStatus      `json:"status"`
-	AlltimeUptimeRatio float64            `json:"alltimeuptimeratio"`
-	CustomUptimeRatio  float64            `json:"customuptimeratio"`
+	Port               int                `json:"port,string"`
+	Interval           int                `json:"interval,string"`
+	Status             MonitorStatus      `json:"status,string"`
+	AlltimeUptimeRatio float64            `json:"alltimeuptimeratio,string"`
+	CustomUptimeRatio  float64            `json:"customuptimeratio,string"`
 	AlertContacts      []AlertContact     `json:"alertcontact"`
 	Logs               []Log              `json:"log"`
 	ResponseTimes      []ResponseTime     `json:"responsetime"`
 }
 
 type ResponseTime struct {
-	DateTime time.Time `json:"datetime"`
-	Value    int       `json:"value"`
+	DateTime UptimeRobotDate `json:"datetime"`
+	Value    int             `json:"value,string"`
 }
 
 // GetMonitorsInput is the Input type for the GetMonitors function. All parameters
@@ -173,11 +173,13 @@ func (u *UptimeRobot) GetMonitors(in *GetMonitorsInput) ([]Monitor, error) {
 	result := []Monitor{}
 	for {
 		res := &struct {
-			Stat     string    `json:"stat"`
-			Offset   int       `json:"offset"`
-			Limit    int       `json:"limit"`
-			Total    int       `json:"total"`
-			Monitors []Monitor `json:"monitors"`
+			Stat     string `json:"stat"`
+			Offset   int    `json:"offset,string"`
+			Limit    int    `json:"limit,string"`
+			Total    int    `json:"total,string"`
+			Monitors struct {
+				Monitors []Monitor `json:"monitor"`
+			} `json:"monitors"`
 		}{}
 
 		err := u.doRequest("getMonitors", &params, res)
@@ -189,7 +191,7 @@ func (u *UptimeRobot) GetMonitors(in *GetMonitorsInput) ([]Monitor, error) {
 			return nil, fmt.Errorf("Got unexpected status: %s", res.Stat)
 		}
 
-		for _, m := range res.Monitors {
+		for _, m := range res.Monitors.Monitors {
 			result = append(result, m)
 		}
 
@@ -263,6 +265,7 @@ func (u *UptimeRobot) NewOrEditMonitor(in Monitor) (*Monitor, error) {
 	if in.ID == 0 {
 		err = u.doRequest("newMonitor", params, res)
 	} else {
+		params.Set("monitorID", strconv.FormatInt(int64(in.ID), 10))
 		err = u.doRequest("editMonitor", params, res)
 	}
 	if err != nil {

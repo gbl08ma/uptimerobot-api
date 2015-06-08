@@ -1,7 +1,5 @@
 package uptimerobot
 
-import "time"
-
 type LogType int
 
 const (
@@ -12,6 +10,6 @@ const (
 )
 
 type Log struct {
-	Type     LogType
-	DateTime time.Time
+	Type     LogType         `json:"type,string"`
+	DateTime UptimeRobotDate `json:"datetime"`
 }

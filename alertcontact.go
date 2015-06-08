@@ -32,23 +32,23 @@ const (
 )
 
 type AlertContact struct {
-	ID           int
-	Type         AlertContactType
-	Value        string
-	Status       AlertContactStatus
-	Threshold    int
-	Recurrence   int
-	FriendlyName string
+	ID           int                `json:"id,string"`
+	Type         AlertContactType   `json:"type,string"`
+	Value        string             `json:"value"`
+	Status       AlertContactStatus `json:"status,string"`
+	Threshold    int                `json:"threshold,string"`
+	Recurrence   int                `json:"recurrence,string"`
+	FriendlyName string             `json:"friendlyname"`
 }
 
 // GetAlertContacts can be used to retrieve a (filtered) list of alert contacts
-func (u *UptimeRobot) GetAlertContacts(contactIDs *[]int) ([]AlertContact, error) {
+func (u *UptimeRobot) GetAlertContacts(contactIDs []int) ([]AlertContact, error) {
 	params := &url.Values{
 		"limit":  []string{"50"},
 		"offset": []string{"0"},
 	}
 
-	if contactIDs != nil && len(*contactIDs) > 0 {
+	if len(contactIDs) > 0 {
 		params.Set("alertcontacts", u.buildIntList(contactIDs))
 	}
 
@@ -57,9 +57,9 @@ func (u *UptimeRobot) GetAlertContacts(contactIDs *[]int) ([]AlertContact, error
 	for {
 		res := &struct {
 			Stat          string `json:"stat"`
-			Offset        int    `json:"offset"`
-			Limit         int    `json:"limit"`
-			Total         int    `json:"total"`
+			Offset        int    `json:"offset,string"`
+			Limit         int    `json:"limit,string"`
+			Total         int    `json:"total,string"`
 			AlertContacts struct {
 				Contacts []AlertContact `json:"alertcontact"`
 			} `json:"alertcontacts"`
@@ -90,6 +90,7 @@ func (u *UptimeRobot) NewAlertContact(in AlertContact) (*AlertContact, error) {
 	params := &url.Values{}
 	res := &struct {
 		Stat         string       `json:"stat"`
+		Message      string       `json:"message"`
 		AlertContact AlertContact `json:"alertcontact"`
 	}{
 		AlertContact: in,
@@ -99,16 +100,24 @@ func (u *UptimeRobot) NewAlertContact(in AlertContact) (*AlertContact, error) {
 		return nil, fmt.Errorf("Required parameters misisng. Please check the documentation.")
 	}
 
+	if len(in.FriendlyName) > 30 {
+		return nil, fmt.Errorf("FriendlyName may not have more than 30 chars")
+	}
+
 	params.Set("alertContactType", strconv.FormatInt(int64(in.Type), 10))
 	params.Set("alertContactValue", in.Value)
 
 	if in.FriendlyName != "" {
-		params.Set("alertContactFriendleName", in.FriendlyName)
+		params.Set("alertContactFriendlyName", in.FriendlyName)
 	}
 
 	err := u.doRequest("newAlertContact", params, res)
 	if err != nil {
 		return nil, err
+	}
+
+	if res.Stat != "ok" {
+		return nil, fmt.Errorf("Contact not created: %s", res.Message)
 	}
 
 	return &res.AlertContact, nil

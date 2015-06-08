@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // UptimeRobot is a representation of the UptimeRobot public API
@@ -36,6 +37,10 @@ func (u *UptimeRobot) doRequest(apiMethod string, params *url.Values, target int
 	params.Set("noJsonCallback", "1") // Enforce not to get JSONP wrapper
 	params.Set("format", "json")
 	params.Set("apiKey", u.apikey)
+
+	if u.FullDebug {
+		params.Set("v", strconv.FormatInt(time.Now().UnixNano(), 10))
+	}
 
 	url := url.URL{
 		Scheme:   "https",

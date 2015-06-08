@@ -5,15 +5,15 @@ import "fmt"
 // AccountDetail represents detailed information about the account
 type AccountDetail struct {
 	// the max number of monitors that can be created for the account
-	MonitorLimit int `json:"monitorLimit"`
+	MonitorLimit int `json:"monitorLimit,string"`
 	// the min monitoring interval (in minutes) supported by the account
-	MonitorInterval int `json:"monitorInterval"`
+	MonitorInterval int `json:"monitorInterval,string"`
 	// the number of "up" monitors
-	UpMonitors int `json:"upMonitors"`
+	UpMonitors int `json:"upMonitors,string"`
 	// the number of "down" monitors
-	DownMonitors int `json:"downMonitors"`
+	DownMonitors int `json:"downMonitors,string"`
 	// the number of "paused" monitors
-	PausedMonitors int `json:"pausedMonitors"`
+	PausedMonitors int `json:"pausedMonitors,string"`
 }
 
 // GetAccountDetails fetches account details (max number of monitors that can be
