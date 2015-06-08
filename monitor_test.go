@@ -37,7 +37,7 @@ func setUpAlertContact(t *testing.T, ur *UptimeRobot) *AlertContact {
 
 func createNewMonitor(t *testing.T, ur *UptimeRobot, ac *AlertContact) *Monitor {
 	monitor := Monitor{
-		FriendlyName:  "UptimeRobot-API-Test",
+		FriendlyName:  uuid.NewV4().String()[0:30],
 		URL:           "http://www.example.com/",
 		Type:          MonitorTypeHTTP,
 		KeywordType:   MonitorKeywordTypeNotExists,
@@ -98,7 +98,7 @@ func findAndMatchMonitor(t *testing.T, ur *UptimeRobot, mon *Monitor, ac *AlertC
 }
 
 func updateMonitor(t *testing.T, ur *UptimeRobot, mon *Monitor) *Monitor {
-	mon.FriendlyName = "UptimeRobot-API-Test2"
+	mon.FriendlyName = uuid.NewV4().String()[0:30]
 
 	m, err := ur.NewOrEditMonitor(*mon)
 	if err != nil {
