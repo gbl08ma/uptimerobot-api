@@ -10,7 +10,8 @@ import (
 
 func TestMonitorFlow(t *testing.T) {
 	ur := New(os.Getenv("UR_API_KEY"))
-	ur.FullDebug = true
+	ur.FullDebug = false
+	ur.disableCaching = true
 
 	ac := setUpAlertContact(t, ur)
 	monitor := createNewMonitor(t, ur, ac)

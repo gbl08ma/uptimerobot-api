@@ -11,7 +11,8 @@ import (
 
 func TestGetAlertContacts(t *testing.T) {
 	ur := New(os.Getenv("UR_API_KEY"))
-	ur.FullDebug = true
+	ur.FullDebug = false
+	ur.disableCaching = true
 
 	ac, err := ur.GetAlertContacts(nil)
 	if err != nil {
@@ -36,7 +37,8 @@ func TestGetAlertContacts(t *testing.T) {
 
 func TestNewGetDeleteAlertContact(t *testing.T) {
 	ur := New(os.Getenv("UR_API_KEY"))
-	ur.FullDebug = true
+	ur.FullDebug = false
+	ur.disableCaching = true
 
 	u := uuid.NewV4().String()
 	ac := AlertContact{
@@ -84,7 +86,8 @@ func TestNewGetDeleteAlertContact(t *testing.T) {
 
 func TestNewAlertContactMissingParameters(t *testing.T) {
 	ur := New(os.Getenv("UR_API_KEY"))
-	ur.FullDebug = true
+	ur.FullDebug = false
+	ur.disableCaching = true
 
 	ac := AlertContact{}
 	_, err := ur.NewAlertContact(ac)
@@ -99,7 +102,8 @@ func TestNewAlertContactMissingParameters(t *testing.T) {
 
 func TestNewAlertContactWrongParameters(t *testing.T) {
 	ur := New(os.Getenv("UR_API_KEY"))
-	ur.FullDebug = true
+	ur.FullDebug = false
+	ur.disableCaching = true
 
 	ac := AlertContact{
 		Type:  -1,
@@ -118,7 +122,8 @@ func TestNewAlertContactWrongParameters(t *testing.T) {
 
 func TestNewAlertContactLongFriendlyName(t *testing.T) {
 	ur := New(os.Getenv("UR_API_KEY"))
-	ur.FullDebug = true
+	ur.FullDebug = false
+	ur.disableCaching = true
 
 	ac := AlertContact{
 		FriendlyName: "I'm a very long friendly name with more than 30 characters which should fail",

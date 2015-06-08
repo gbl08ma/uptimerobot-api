@@ -13,15 +13,15 @@ To execute the tests you need to export your UptimeRobot API-Key to your env bef
 
 ```bash
 # export UR_API_KEY=u232958-fc43e2ab62ed66a08b0e578b
-# go test -cover -v ./... 2>/dev/null
+# go test -cover -v ./...
 === RUN TestGetAccountDetail
---- PASS: TestGetAccountDetail (0.61s)
+--- PASS: TestGetAccountDetail (0.63s)
 === RUN TestGetAccountDetailWithoutAccount
 --- PASS: TestGetAccountDetailWithoutAccount (0.54s)
 === RUN TestGetAlertContacts
---- PASS: TestGetAlertContacts (0.56s)
+--- PASS: TestGetAlertContacts (0.54s)
 === RUN TestNewGetDeleteAlertContact
---- PASS: TestNewGetDeleteAlertContact (2.23s)
+--- PASS: TestNewGetDeleteAlertContact (2.35s)
 === RUN TestNewAlertContactMissingParameters
 --- PASS: TestNewAlertContactMissingParameters (0.00s)
 === RUN TestNewAlertContactWrongParameters
@@ -29,8 +29,8 @@ To execute the tests you need to export your UptimeRobot API-Key to your env bef
 === RUN TestNewAlertContactLongFriendlyName
 --- PASS: TestNewAlertContactLongFriendlyName (0.00s)
 === RUN TestMonitorFlow
---- PASS: TestMonitorFlow (3.89s)
+--- PASS: TestMonitorFlow (4.22s)
 PASS
-coverage: 74.0% of statements
-ok  	github.com/Jimdo/uptimerobot-api	8.385s
+coverage: 72.8% of statements
+ok  	github.com/Jimdo/uptimerobot-api	8.828s
 ```

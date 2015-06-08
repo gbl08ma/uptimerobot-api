@@ -8,7 +8,8 @@ import (
 
 func TestGetAccountDetail(t *testing.T) {
 	ur := New(os.Getenv("UR_API_KEY"))
-	ur.FullDebug = true
+	ur.FullDebug = false
+	ur.disableCaching = true
 	ad, err := ur.GetAccountDetails()
 
 	if err != nil {
@@ -26,7 +27,8 @@ func TestGetAccountDetail(t *testing.T) {
 
 func TestGetAccountDetailWithoutAccount(t *testing.T) {
 	ur := New("foobar")
-	ur.FullDebug = true
+	ur.FullDebug = false
+	ur.disableCaching = true
 	_, err := ur.GetAccountDetails()
 
 	if err == nil {

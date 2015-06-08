@@ -14,18 +14,20 @@ import (
 
 // UptimeRobot is a representation of the UptimeRobot public API
 type UptimeRobot struct {
-	apikey     string
-	HTTPClient *http.Client
-	FullDebug  bool
+	apikey         string
+	HTTPClient     *http.Client
+	FullDebug      bool
+	disableCaching bool
 }
 
 // New creates a new UptimeRobot API client with the given API-key to identify
 // the account you're working with
 func New(apikey string) *UptimeRobot {
 	return &UptimeRobot{
-		apikey:     apikey,
-		HTTPClient: http.DefaultClient,
-		FullDebug:  false,
+		apikey:         apikey,
+		HTTPClient:     http.DefaultClient,
+		FullDebug:      false,
+		disableCaching: false,
 	}
 }
 
@@ -38,7 +40,7 @@ func (u *UptimeRobot) doRequest(apiMethod string, params *url.Values, target int
 	params.Set("format", "json")
 	params.Set("apiKey", u.apikey)
 
-	if u.FullDebug {
+	if u.FullDebug || u.disableCaching {
 		params.Set("v", strconv.FormatInt(time.Now().UnixNano(), 10))
 	}
 
