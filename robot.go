@@ -3,6 +3,8 @@ package uptimerobot
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -13,6 +15,7 @@ import (
 type UptimeRobot struct {
 	apikey     string
 	HTTPClient *http.Client
+	FullDebug  bool
 }
 
 // New creates a new UptimeRobot API client with the given API-key to identify
@@ -21,6 +24,7 @@ func New(apikey string) *UptimeRobot {
 	return &UptimeRobot{
 		apikey:     apikey,
 		HTTPClient: http.DefaultClient,
+		FullDebug:  false,
 	}
 }
 
@@ -40,6 +44,10 @@ func (u *UptimeRobot) doRequest(apiMethod string, params *url.Values, target int
 		RawQuery: params.Encode(),
 	}
 
+	if u.FullDebug {
+		log.Printf("[DEBUG] => %s\n", url.String())
+	}
+
 	req, err := http.NewRequest("GET", url.String(), nil)
 	if err != nil {
 		return err
@@ -51,7 +59,16 @@ func (u *UptimeRobot) doRequest(apiMethod string, params *url.Values, target int
 	}
 	defer res.Body.Close()
 
-	err = json.NewDecoder(res.Body).Decode(target)
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
+	if u.FullDebug {
+		log.Printf("[DEBUG] <= %s\n", string(body))
+	}
+
+	err = json.Unmarshal(body, target)
 	return err
 }
 
