@@ -2,6 +2,7 @@ package uptimerobot
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 
@@ -9,7 +10,7 @@ import (
 )
 
 func TestGetAlertContacts(t *testing.T) {
-	ur := New("u232958-fc43e2ab62ed66a08b0e578b")
+	ur := New(os.Getenv("UR_API_KEY"))
 	ur.FullDebug = true
 
 	ac, err := ur.GetAlertContacts(nil)
@@ -34,7 +35,7 @@ func TestGetAlertContacts(t *testing.T) {
 }
 
 func TestNewGetDeleteAlertContact(t *testing.T) {
-	ur := New("u232958-fc43e2ab62ed66a08b0e578b")
+	ur := New(os.Getenv("UR_API_KEY"))
 	ur.FullDebug = true
 
 	u := uuid.NewV4().String()
@@ -82,7 +83,7 @@ func TestNewGetDeleteAlertContact(t *testing.T) {
 }
 
 func TestNewAlertContactMissingParameters(t *testing.T) {
-	ur := New("u232958-fc43e2ab62ed66a08b0e578b")
+	ur := New(os.Getenv("UR_API_KEY"))
 	ur.FullDebug = true
 
 	ac := AlertContact{}
@@ -97,7 +98,7 @@ func TestNewAlertContactMissingParameters(t *testing.T) {
 }
 
 func TestNewAlertContactWrongParameters(t *testing.T) {
-	ur := New("u232958-fc43e2ab62ed66a08b0e578b")
+	ur := New(os.Getenv("UR_API_KEY"))
 	ur.FullDebug = true
 
 	ac := AlertContact{
@@ -116,7 +117,7 @@ func TestNewAlertContactWrongParameters(t *testing.T) {
 }
 
 func TestNewAlertContactLongFriendlyName(t *testing.T) {
-	ur := New("u232958-fc43e2ab62ed66a08b0e578b")
+	ur := New(os.Getenv("UR_API_KEY"))
 	ur.FullDebug = true
 
 	ac := AlertContact{

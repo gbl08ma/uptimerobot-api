@@ -1,12 +1,13 @@
 package uptimerobot
 
 import (
+	"os"
 	"strings"
 	"testing"
 )
 
 func TestGetAccountDetail(t *testing.T) {
-	ur := New("u232958-fc43e2ab62ed66a08b0e578b")
+	ur := New(os.Getenv("UR_API_KEY"))
 	ur.FullDebug = true
 	ad, err := ur.GetAccountDetails()
 

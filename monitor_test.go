@@ -2,13 +2,14 @@ package uptimerobot
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/satori/go.uuid"
 )
 
 func TestMonitorFlow(t *testing.T) {
-	ur := New("u232958-fc43e2ab62ed66a08b0e578b")
+	ur := New(os.Getenv("UR_API_KEY"))
 	ur.FullDebug = true
 
 	ac := setUpAlertContact(t, ur)
