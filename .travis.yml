@@ -3,6 +3,10 @@ language: go
 go:
   - 1.4
 
+env:
+  global:
+    secure: "IfcdFCk/PgI3WK0qIvigG515NYoScXLLkaFVKFzyvTXjUJwWR8Z2/e7OMDd0DwmV3EkPV9invrwvB4xtb+d9Vz7vUA8SIpEN9Z3bRU2iC8Qr48oOBlSnV4zcEWhvGx8W1Hr5om7uznWjE6liXU7ihPxvZMgd1XeHMG9E5Y3D0aI="
+
 install:
   - go get -v -t ./...
 
