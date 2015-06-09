@@ -11,7 +11,11 @@ func (t UptimeRobotDate) MarshalJSON() ([]byte, error) {
 func (t *UptimeRobotDate) UnmarshalJSON(in []byte) error {
 	p, err := time.Parse("\"01/02/2006 15:04:05\"", string(in))
 	if err != nil {
-		return err
+		// Some API parts are delivering a different date format so we handle this too
+		p, err = time.Parse("\"01/02/06 15:04:05\"", string(in))
+		if err != nil {
+			return err
+		}
 	}
 	*t = UptimeRobotDate(p)
 	return nil
