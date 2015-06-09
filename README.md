@@ -1,6 +1,6 @@
 # Jimdo / uptimerobot-api
 
-[![Build Status](https://magnum.travis-ci.com/Jimdo/uptimerobot-api.svg?token=oqHdLv3md1svjAXzqgy2&branch=master)](https://magnum.travis-ci.com/Jimdo/uptimerobot-api)
+[![Build Status](https://travis-ci.org/Jimdo/uptimerobot-api.svg?branch=master)](https://travis-ci.org/Jimdo/uptimerobot-api)
 [![API-Documentation](http://badge.luzifer.io/v1/badge?title=API&text=Documentation&color=4c1)](https://uptimerobot.com/api)
 [![GoDoc Reference](http://badge.luzifer.io/v1/badge?color=5d79b5&title=godoc&text=reference)](https://godoc.org/github.com/Jimdo/uptimerobot-api)
 [![License Apache 2.0](http://badge.luzifer.io/v1/badge?color=5d79b5&title=license&text=Apache%202.0)](http://www.apache.org/licenses/LICENSE-2.0)
