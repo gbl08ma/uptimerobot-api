@@ -183,7 +183,12 @@ func (u *UptimeRobot) GetMonitors(in *GetMonitorsInput) ([]Monitor, error) {
 			Total    int    `json:"total,string"`
 			ID       int    `json:"id,string"`
 			Monitors struct {
-				Monitors []Monitor `json:"monitor"`
+				Monitors []struct {
+					Monitor
+					Subtype     string `json:"subtype"`
+					KeywordType string `json:"keywordtype"`
+					Port        string `json:"port"`
+				} `json:"monitor"`
 			} `json:"monitors"`
 		}{}
 
@@ -199,7 +204,45 @@ func (u *UptimeRobot) GetMonitors(in *GetMonitorsInput) ([]Monitor, error) {
 			return nil, fmt.Errorf("Got unexpected status: %s", res.Stat)
 		}
 
-		for _, m := range res.Monitors.Monitors {
+		for _, jm := range res.Monitors.Monitors {
+			m := Monitor{
+				ID:                 jm.ID,
+				FriendlyName:       jm.FriendlyName,
+				URL:                jm.URL,
+				Type:               jm.Type,
+				KeywordValue:       jm.KeywordValue,
+				HTTPUsername:       jm.HTTPUsername,
+				HTTPPassword:       jm.HTTPPassword,
+				Interval:           jm.Interval,
+				Status:             jm.Status,
+				AlltimeUptimeRatio: jm.AlltimeUptimeRatio,
+				CustomUptimeRatio:  jm.CustomUptimeRatio,
+				AlertContacts:      jm.AlertContacts,
+				Logs:               jm.Logs,
+				ResponseTimes:      jm.ResponseTimes,
+			}
+
+			subtype, err := strconv.Atoi(jm.Subtype)
+			if err != nil {
+				m.Subtype = MonitorSubtypeHTTP
+			} else {
+				m.Subtype = MonitorSubtype(subtype)
+			}
+
+			keywordtype, err := strconv.Atoi(jm.KeywordType)
+			if err != nil {
+				m.KeywordType = MonitorKeywordTypeExists
+			} else {
+				m.KeywordType = MonitorKeywordType(keywordtype)
+			}
+
+			port, err := strconv.Atoi(jm.Port)
+			if err != nil {
+				m.Port = 0
+			} else {
+				m.Port = port
+			}
+
 			result = append(result, m)
 		}
 
