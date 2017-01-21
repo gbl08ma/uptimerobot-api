@@ -14,7 +14,12 @@ func (t *UptimeRobotDate) UnmarshalJSON(in []byte) error {
 		// Some API parts are delivering a different date format so we handle this too
 		p, err = time.Parse("\"01/02/06 15:04:05\"", string(in))
 		if err != nil {
-			return err
+			// Some API parts, once in a blue moon, return a timestamp that contains only the date,
+			// for whatever reason
+			p, err = time.Parse("\"01/02/2006\"", string(in))
+			if err != nil {
+				return err
+			}
 		}
 	}
 	*t = UptimeRobotDate(p)
